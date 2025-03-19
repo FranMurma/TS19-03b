@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcendence</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+    
+            <!-- Matrix izquierdo -->
+            <div class="col-1 matrix-effect ocultable">
+                <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+            </div>
+    
+            <!-- Línea divisoria izquierda -->
+            <div class="vertical-divider divider-left ocultable"></div>
+    
+            <!-- Canvas Juego -->
+            <canvas class="background-image" id="juego" aria-label="Juego en curso, Transcendence Pong"></canvas>
+    
+            <!-- Contenido principal -->
+            <div class="col-10">
+                <!-- Título y Avatar -->
+                <div class="rounded-box title-box mt-3 mx-auto" style="width: 100%;">
+                    <div class="title-wrapper">
+                        <!-- Sección del Avatar -->
+                        <div class="avatar-section">
+                            <img id="avatar" src="" alt="Avatar del usuario" role="img">
+                        </div>
+                
+                        <!-- Sección del Título -->
+                        <div class="title-section">
+                            <div class="main-title">Transcendence</div>
+                        </div>
+                    </div>
+                
+                    <div class="section-divider left"></div>
+                    <div class="section-divider right"></div>
+                </div>
+    
+
+                <!-- Menús organizados claramente en filas y columnas -->
+                <div class="mt-4 ocultable">
+                    <div class="row mb-2">
+                        <div class="col-2 position-relative">
+                            <!-- 🔹 Botón de Login -->
+                            <div id="loginBox" 
+                                class="rounded-box option-box menu-option" 
+                                tabindex="0" 
+                                data-translate="login" 
+                                aria-expanded="false" 
+                                aria-controls="loginMenu" 
+                                role="button">
+                                Log in
+                            </div>
+
+                            <!-- 🔹 Botón de Logout -->
+                            <div id="logoutBox" 
+                                class="rounded-box option-box menu-option" 
+                                tabindex="0" 
+                                data-translate="logout" 
+                                style="display: none;" 
+                                aria-expanded="false" 
+                                aria-controls="loginMenu" 
+                                role="button">
+                                Log out
+                            </div>
+
+                            <!-- 🔹 Submenú de Login -->
+                            <div id="loginMenu" class="submenu" style="display:none;" role="menu" aria-hidden="true">
+                                <p class="login-option" data-action="sign-up" id="sign-up" data-translate="sign-up" role="menuitem" tabindex="0">Sign up</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="login-email" data-translate="log-in-email" role="menuitem" tabindex="0">Log in with email</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="login-username" data-translate="log-in-username" role="menuitem" tabindex="0">Log in with username</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="login-intra" data-translate="log-in-intra" role="menuitem" tabindex="0">Log in with intra (42 School)</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="forgot-password" data-translate="forgot-password" role="menuitem" tabindex="0">Forgot password?</p>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row mb-2">
+                    <div class="col-2 position-relative">
+                        <!-- 🔹 Botón de Profile -->
+                        <div id="profileBox"
+                            class="rounded-box option-box menu-option"
+                            tabindex="0"
+                            style="display:none;"
+                            data-translate="profile-settings"
+                            aria-expanded="false"
+                            aria-controls="profileMenu"
+                            role="button">
+                            Profile <span id="userNameDisplay"></span>
+                        </div>
+
+                
+                        <!-- 🔹 Sección Profile (Incluye el menú de perfil). Cambiado para la navegación por hash -->
+                        <div id="profile" class="view-section" style="display: none;">
+                            <h2 class="hidden-title">Profile</h2>
+                            <div id="profileMenu" class="submenu" role="menu" aria-hidden="false">
+                                <p class="login-option" id="change-username" data-translate="edit-username" role="menuitem" tabindex="0">Change username</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="change-avatar" data-translate="change-avatar" role="menuitem" tabindex="0">Change avatar</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="change-password" data-translate="edit-password" role="menuitem" tabindex="0">Change password</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="toggle-2fa" data-translate="toggle-2fa" role="menuitem" tabindex="0">Manage Two-Factor Authentication</p>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>                    
+                
+                <div class="row mb-2">
+                    <div class="col-2 position-relative">
+                        <!-- 🔹 Botón de Game Modes -->
+                        <div id="gameModesBox" 
+                             class="rounded-box option-box menu-option" 
+                             tabindex="0" 
+                             style="display:none;" 
+                             data-translate="game-modes" 
+                             aria-expanded="false" 
+                             aria-controls="gameModesMenu" 
+                             role="button">
+                            Game Modes
+                        </div>
+                
+                        <!-- 🔹 Sección Game Modes (Incluye el submenú) -->
+                        <div id="gameModes" class="view-section" style="display: none;">
+                            <h2 class="hidden-title">Game Modes</h2>
+                            <div id="gameModesMenu" class="submenu" role="menu" aria-hidden="false">
+                                <p class="login-option" id="solo-ai" data-translate="solo-ai" role="menuitem" tabindex="0">Solo vs AI</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="local-multiplayer" data-translate="local" role="menuitem" tabindex="0">Local Multiplayer</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="online-multiplayer" data-translate="online" role="menuitem" tabindex="0">Online Multiplayer</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="create-tournament" data-translate="create-tournament" role="menuitem" tabindex="0">Create Tournament</p>
+                                <div class="separator ocultable"></div>
+                                <p class="login-option" id="join-tournament" data-translate="join-tournament" role="menuitem" tabindex="0">Join Tournament</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>  
+                                 
+
+                <div class="row mb-2">
+                    <div class="col-2 position-relative">
+                        <div id="tournamentsBox" class="rounded-box option-box menu-option" tabindex="0" style="display:none;" data-translate="blockchain-tournaments">
+                            Blockchain Tournaments
+                        </div>
+                        <div id="tournamentsMenu" class="submenu" style="display:none;">
+                            <h3 data-translate="saved-tournaments">Saved Tournaments</h3>
+                        
+                            <!-- Buscador -->
+                            <input type="text" id="tournamentSearch" class="form-control mb-2" placeholder="Search by Tournament ID/Name" data-translate="search-tournaments">
+                        
+                            <!-- 🔹 Contenedor de Torneos con Scroll -->
+                            <div id="tournamentContainer">
+                                <ul id="tournamentResults" class="tournament-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loged" class="view-section" style="display: none;">
+                    <!-- Esta sección no hace nada, solo evita que la URL quede vacía -->
+                </div>
+                
+                
+
+                
+                <div class="row">
+                    <div class="col-2 position-relative">
+                        <div id="languageBox" class="rounded-box option-box menu-option no-border" tabindex="0">
+                            <span data-translate="language">Language</span>
+                            <select id="languageSelector" class="language-dropdown">
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+
+            <!-- Línea divisoria derecha -->
+            <div class="vertical-divider divider-right ocultable"></div>
+
+            <!-- Matrix derecho, asegurado claramente FUERA del contenido principal -->
+            <div class="col-1 matrix-effect ocultable">
+                <canvas id="matrixCanvasRight"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Si NO lo usas, este modal se puede eliminar -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="editModalInput">Edit:</label>
+                    <input type="text" id="editModalInput" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- 🔹 Modal para Sign Up con accesibilidad mejorada -->
+    <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUpModalLabel" data-translate="sign-up">Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="signUpUsername" data-translate="enter-username">Username:</label>
+                    <input type="text" id="signUpUsername" class="form-control" required aria-describedby="usernameError">
+                    <small id="usernameError" class="error-message" role="alert"></small>
+
+                    <label for="signUpEmail" data-translate="enter-email">Email:</label>
+                    <input type="email" id="signUpEmail" class="form-control" aria-describedby="emailError">
+                    <small id="emailError" class="error-message" role="alert"></small>
+
+                    <label for="signUpPassword" data-translate="enter-password">Password:</label>
+                    <input type="password" id="signUpPassword" class="form-control" aria-describedby="passwordHelp passwordError">
+                    <small id="passwordHelp" class="form-text password-helper" data-translate="password-requirements" style="display: none;">
+                        La contraseña debe tener al menos 6 caracteres, incluir una mayúscula y un número.
+                    </small>
+                    
+                    <small id="passwordError" class="error-message" role="alert"></small>
+
+                    <label for="confirmSignUpPassword" data-translate="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirmSignUpPassword" class="form-control" aria-describedby="confirmPasswordError">
+                    <small id="confirmPasswordError" class="error-message" role="alert"></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmSignUp" data-translate="sign-up" aria-live="polite">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal para Log In con Email -->
+    <div class="modal fade" id="loginEmailModal" tabindex="-1" aria-labelledby="loginEmailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginEmailModalLabel" data-translate="log-in-email">Log In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="loginEmailInput" data-translate="enter-email">Email:</label>
+                    <input type="email" id="loginEmailInput" class="form-control" aria-describedby="loginEmailError">
+                    <small id="loginEmailError" class="error-message" role="alert"></small>
+
+                    <label for="loginPasswordInput" data-translate="enter-password">Password:</label>
+                    <input type="password" id="loginPasswordInput" class="form-control" required 
+                        aria-describedby="loginPasswordError">
+                    <small id="loginPasswordError" class="error-message" role="alert"></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmLoginEmail" 
+                            data-translate="log-in-email" aria-live="polite">Log In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Log In con Username -->
+    <div class="modal fade" id="loginUsernameModal" tabindex="-1" aria-labelledby="loginUsernameModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginUsernameModalLabel" data-translate="log-in-username">Log In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="loginUsernameInput" data-translate="enter-username">Username:</label>
+                    <input type="text" id="loginUsernameInput" class="form-control" aria-describedby="loginUsernameError">
+                    <small id="loginUsernameError" class="error-message" role="alert"></small>
+
+                    <label for="loginPasswordUsernameInput" data-translate="enter-password">Password:</label>
+                    <input type="password" id="loginPasswordUsernameInput" class="form-control" required 
+                        aria-describedby="loginPasswordUsernameError">
+                    <small id="loginPasswordUsernameError" class="error-message" role="alert"></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmLoginUsername" 
+                            data-translate="log-in-username" aria-live="polite">Log In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <!-- Modal: Forgot Password -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordLabel" data-translate="forgot-password">Forgot Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="forgotPasswordEmail" data-translate="enter-email">Enter your email:</label>
+                    <input type="email" id="forgotPasswordEmail" class="form-control mb-2" placeholder="Enter your email" 
+                        data-translate="enter-email" aria-describedby="forgotPasswordError">
+                    <p id="forgotPasswordError" class="error-message" role="alert"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmForgotPassword" 
+                            data-translate="reset-password" aria-live="polite">Reset Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: Change Password -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordLabel" data-translate="edit-password">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="currentPassword" data-translate="current-password">Current Password:</label>
+                    <input type="password" id="currentPassword" class="form-control mb-2" placeholder="Current Password" 
+                        data-translate="current-password" aria-describedby="passwordChangeError">
+
+                    <label for="newPassword" data-translate="new-password">New Password:</label>
+                    <input type="password" id="newPassword" class="form-control mb-2" placeholder="New Password" 
+                        data-translate="new-password" aria-describedby="passwordChangeError">
+
+                    <label for="confirmNewPassword" data-translate="confirm-new-password">Confirm New Password:</label>
+                    <input type="password" id="confirmNewPassword" class="form-control mb-2" placeholder="Confirm New Password" 
+                        data-translate="confirm-new-password" aria-describedby="passwordChangeError">
+
+                    <p id="passwordChangeError" class="error-message" role="alert"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmChangePassword" 
+                            data-translate="confirm-change" aria-live="polite">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: Change Username -->
+    <div class="modal fade" id="changeUsernameModal" tabindex="-1" aria-labelledby="changeUsernameLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeUsernameLabel" data-translate="edit-username">Change Username</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="newUsername" data-translate="new-username">New Username:</label>
+                    <input type="text" id="newUsername" class="form-control mb-2" placeholder="Enter new username" 
+                        data-translate="new-username-placeholder" aria-describedby="changeUsernameError">
+                    <p id="changeUsernameError" class="error-message" role="alert"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveNewUsername" 
+                            data-translate="save-button" aria-live="polite">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Change Avatar -->
+    <div class="modal fade" id="changeAvatarModal" tabindex="-1" aria-labelledby="changeAvatarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeAvatarLabel" data-translate="change-avatar">Change Avatar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="avatarPreview" src="" class="rounded-circle mb-3" width="100" height="100" alt="Avatar Preview">
+
+                    <!-- 🔹 Input estándar de Bootstrap para archivos -->
+                    <input type="file" id="avatarInput" class="form-control" accept="image/*" aria-describedby="selectedFileName">
+
+                    <p id="avatarError" class="error-message mt-2" role="alert"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveAvatar" 
+                            data-translate="save-button" aria-live="polite">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: Enable/Disable 2FA -->
+    <div class="modal fade" id="toggle2FAModal" tabindex="-1" aria-labelledby="toggle2FALabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="toggle2FALabel" data-translate="toggle-2fa">Two-Factor Authentication</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="2faMessage" data-translate="2fa-message" aria-live="polite">Loading...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+                            data-translate="cancel-button" aria-live="polite">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmToggle2FA" 
+                            data-translate="confirm-change" aria-live="polite">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal para Crear/Unirse a un Torneo -->
+    <!-- JJJJOOOOOOOOSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE-->
+    <div class="modal fade" id="tournamentModal" tabindex="-1" aria-labelledby="tournamentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tournamentModalLabel" data-translate="tournament-options">Tournament Options</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Selector de pestañas -->
+                    <ul class="nav nav-tabs" id="tournamentTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="createTab" data-bs-toggle="tab" data-bs-target="#createTournament" data-translate="create-tournament">
+                                Create Tournament
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="joinTab" data-bs-toggle="tab" data-bs-target="#joinTournament" data-translate="join-tournament">
+                                Join Tournament
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Contenido de las pestañas -->
+                    <div class="tab-content mt-3">
+                        <!-- Crear Torneo -->
+                        <div class="tab-pane fade show active" id="createTournament">
+                            <label for="tournamentNameCreate" data-translate="tournament-name">Tournament Name:</label>
+                            <input type="text" id="tournamentNameCreate" class="form-control mb-2" placeholder="Enter tournament name" required>
+
+                            <label for="numPlayers" data-translate="number-of-players">Number of Players:</label>
+                            <input type="number" id="numPlayers" class="form-control mb-2" placeholder="Enter number of players" min="2" required>
+
+                            <small id="createTournamentError" class="error-message" role="alert"></small>
+                        </div>
+
+                        <!-- Unirse a un Torneo -->
+                        <div class="tab-pane fade" id="joinTournament">
+                            <label for="tournamentNameJoin" data-translate="tournament-name">Tournament Name:</label>
+                            <input type="text" id="tournamentNameJoin" class="form-control mb-2" placeholder="Enter tournament name" required>
+
+                            <label for="tournamentID" data-translate="tournament-id">Tournament ID:</label>
+                            <input type="text" id="tournamentID" class="form-control mb-2" placeholder="Enter tournament ID" required>
+
+                            <small id="joinTournamentError" class="error-message" role="alert"></small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="createTournamentBtn" data-translate="create-tournament">Create</button>
+                    <button type="button" class="btn btn-success" id="joinTournamentBtn" data-translate="join-tournament" style="display:none;">Join</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="translations.js"></script>
+    <script src="navigation.js"></script>
+    
+    <script src="ui.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
