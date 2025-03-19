@@ -120,6 +120,16 @@ const translations = {
         "2fa-enabled": "✅ 2FA enabled. Check your email or authentication app.",
         "backend-error": "❌ Error from the server",
         "fetch-error": "❌ Network error while enabling 2FA.",
+        "tournament-name": "Tournament Name",
+        "avatar-error": "Error updating avatar",
+        "password-reset-email-sent": "Password reset email sent",
+        "password-reset-error": "Error resetting password",
+        "tournament-options": "Tournament Options",
+        "join": "Join",
+        "loginPasswordError": "Invalid password",
+        "new-username": "New Username:",
+        "loading": "Loading...",
+        "password": "Password:",
         "back": "← Back"
     },
     es: {
@@ -244,6 +254,16 @@ const translations = {
         "2fa-enabled": "✅ 2FA activado. Verifica tu correo o aplicación de autenticación.",
         "backend-error": "❌ Error del servidor",
         "fetch-error": "❌ Error de red al activar 2FA.",
+        "tournament-name": "Nombre del Torneo",
+        "avatar-error": "Error al actualizar el avatar",
+        "password-reset-email-sent": "Correo de restablecimiento de contraseña enviado",
+        "password-reset-error": "Error al restablecer la contraseña",
+        "tournament-options": "Opciones del Torneo",
+        "join": "Unirse",
+        "loginPasswordError": "Contraseña inválida",
+        "new-username": "Nuevo Nombre de Usuario:",
+        "loading": "Cargando...",
+        "password": "Contraseña:",
         "back": "← Volver"
     },
     fr: {
@@ -370,6 +390,16 @@ const translations = {
         "2fa-enabled": "✅ 2FA activé. Vérifiez votre e-mail ou votre application d'authentification.",
         "backend-error": "❌ Erreur du serveur",
         "fetch-error": "❌ Erreur réseau lors de l'activation de 2FA.",
+        "tournament-name": "Nom du Tournoi",
+        "avatar-error": "Erreur lors de la mise à jour de l'avatar",
+        "password-reset-email-sent": "E-mail de réinitialisation du mot de passe envoyé",
+        "password-reset-error": "Erreur de réinitialisation du mot de passe",
+        "tournament-options": "Options du Tournoi",
+        "join": "Rejoindre",
+        "loginPasswordError": "Mot de passe invalide",
+        "new-username": "Nouveau Nom d'Utilisateur:",
+        "loading": "Chargement...",
+        "password": "Mot de passe:",
         "back": "← Retour"
     }
 };
